@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1250.0" prefWidth="1400.0" styleClass="zishan" stylesheets="@options.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.ZishanJavaClass.selectSeassonAndSandController">
+   <children>
+      <Label layoutX="575.0" layoutY="78.0" prefHeight="81.0" prefWidth="286.0" styleClass="head-label" text="     Season and Soil Quality" textFill="#fcfcfc">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <AnchorPane layoutX="286.0" layoutY="236.0" prefHeight="491.0" prefWidth="502.0" styleClass="white-form">
+         <children>
+            <ComboBox fx:id="season" layoutX="71.0" layoutY="75.0" prefHeight="26.0" prefWidth="378.0" promptText="Select Season" styleClass="gradient" />
+            <ComboBox fx:id="soilquality" layoutX="74.0" layoutY="146.0" prefHeight="26.0" prefWidth="378.0" promptText="Select Soil Quality" styleClass="gradient" />
+            <Button layoutX="74.0" layoutY="226.0" mnemonicParsing="false" onAction="#findcrop" prefHeight="30.0" prefWidth="105.0" styleClass="find-btn" text="Find Crop" />
+            <Label fx:id="showex" layoutX="73.0" layoutY="328.0" prefHeight="51.0" prefWidth="383.0" styleClass="text-field" textFill="WHITE" />
+         </children>
+      </AnchorPane>
+      <ImageView fx:id="Logo" fitHeight="57.0" fitWidth="53.0" layoutX="51.0" layoutY="164.0" onMouseClicked="#onHomeBtnClk" pickOnBounds="true" preserveRatio="true" style="-fx-background-radius: 25;">
+         <image>
+            <Image url="@background_image/home-button%20(2).png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="121.0" fitWidth="143.0" layoutX="1143.0" layoutY="137.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="150.0" fitWidth="168.0" layoutX="1111.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@background_image/ecology.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="but" layoutX="996.0" layoutY="346.0" mnemonicParsing="false" prefHeight="292.0" prefWidth="286.0" style="-fx-background-radius: 1000; -fx-background-color: transparent;">
+         <graphic>
+            <ImageView fx:id="circle" fitHeight="323.0" fitWidth="263.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@background_image/ecology%20(1).png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>

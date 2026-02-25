@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1250.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.ZishanJavaClass.cropPlanningController">
+   <content>
+      <AnchorPane fx:id="label1" prefHeight="1250.0" prefWidth="1600.0" styleClass="zishan" stylesheets="@options.css">
+         <children>
+            <Label layoutX="140.0" layoutY="23.0" />
+            <AnchorPane prefHeight="1253.0" prefWidth="200.0" styleClass="zishan" stylesheets="@options.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button layoutX="33.0" layoutY="664.0" mnemonicParsing="false" onAction="#onbackbtnclk" prefHeight="42.0" prefWidth="104.0" styleClass="create-btn" text="BACK" />
+               </children></AnchorPane>
+            <AnchorPane layoutX="200.0" prefHeight="90.0" prefWidth="1195.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label fx:id="season" alignment="CENTER" layoutX="197.0" layoutY="48.0" prefHeight="62.0" prefWidth="201.0" styleClass="gradient" text=" Season" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font></Label>
+                  <Label fx:id="soilQuality" alignment="CENTER" layoutX="539.0" layoutY="47.0" prefHeight="59.0" prefWidth="182.0" styleClass="gradient" text="Quality" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font></Label>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="label2" layoutX="200.0" layoutY="199.0" prefHeight="474.0" prefWidth="1195.0" styleClass="zishan">
+               <children>
+                  <Hyperlink fx:id="name1" alignment="CENTER" layoutX="30.0" layoutY="39.0" onAction="#name1clk" prefHeight="56.0" prefWidth="338.0" styleClass="white-form" text="name1" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Hyperlink>
+                  <ImageView fx:id="imageView1" fitHeight="351.0" fitWidth="306.0" layoutX="879.0" layoutY="25.0" onMouseClicked="#onimg1clk" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../Downloads/agriculture-icon-symbol-creative-sign-from-vector-36577411.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="frst" layoutX="30.0" layoutY="132.0" prefHeight="247.0" prefWidth="774.0" styleClass="gradient" wrapText="true" />
+                  <Button layoutX="27.0" layoutY="408.0" mnemonicParsing="false" onAction="#interCropingBtn1" prefHeight="40.0" prefWidth="174.0" styleClass="find-btn" text="Intercropping" textFill="WHITE" />
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="199.0" layoutY="725.0" prefHeight="478.0" prefWidth="1195.0" styleClass="zishan">
+               <children>
+                  <Hyperlink fx:id="name2" alignment="CENTER" layoutX="28.0" layoutY="39.0" onAction="#name2clk" prefHeight="56.0" prefWidth="340.0" styleClass="white-form" text=" name2" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Hyperlink>
+                  <ImageView fx:id="imageView2" fitHeight="351.0" fitWidth="294.0" layoutX="890.0" layoutY="25.0" onMouseClicked="#onimg2clk" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../Downloads/agriculture-icon-symbol-creative-sign-from-vector-36577411.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="Sec" layoutX="30.0" layoutY="132.0" prefHeight="265.0" prefWidth="774.0" styleClass="gradient" wrapText="true" />
+                  <Button layoutX="29.0" layoutY="413.0" mnemonicParsing="false" onAction="#interCropingBtn2" prefHeight="40.0" prefWidth="190.0" styleClass="find-btn" text="Intercropping" textFill="WHITE" />
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

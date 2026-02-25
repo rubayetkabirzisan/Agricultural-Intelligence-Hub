@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1250.0" prefWidth="1400.0" styleClass="white-form" stylesheets="@../ZishanResources/options.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.MoonJAVAClass.DiseasesController">
+   <effect>
+      <Blend mode="MULTIPLY" />
+   </effect>
+   <left>
+      <AnchorPane prefHeight="1250.0" prefWidth="1600.0" styleClass="white-form" stylesheets="@../ZishanResources/options.css" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" layoutX="494.0" layoutY="65.0" prefHeight="79.0" prefWidth="315.0" style="-fx-background-radius: 1000;" styleClass="white-form" stylesheets="@../ZishanResources/options.css" text="Diseases Identification" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="56.0" layoutY="527.0" mnemonicParsing="false" onAction="#onHomeBtnClk" prefHeight="54.0" prefWidth="186.0" styleClass="create-btn" stylesheets="@../ZishanResources/options.css" text="HOME" />
+            <ComboBox fx:id="comboboxmoon" blendMode="SCREEN" editable="true" layoutX="507.0" layoutY="274.0" prefHeight="62.0" prefWidth="306.0" promptText="SELECT CROP" style="-fx-background-radius: 1000;" styleClass="head-label" stylesheets="@../ZishanResources/options.css" />
+            <Button layoutX="601.0" layoutY="362.0" mnemonicParsing="false" onAction="#findDiseases" prefHeight="52.0" prefWidth="118.0" styleClass="find-btn" stylesheets="@../ZishanResources/options.css" text="FIND CROP" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <effect>
+                  <Blend mode="BLUE" />
+               </effect>
+            </Button>
+            <Button layoutX="59.0" layoutY="651.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="186.0" styleClass="create-btn" stylesheets="@../ZishanResources/options.css" text="READ ME" />
+            <Label fx:id="throwerror" layoutX="512.0" layoutY="216.0" prefHeight="40.0" prefWidth="345.0" text="Label" />
+         </children>
+      </AnchorPane>
+   </left>
+</BorderPane>
