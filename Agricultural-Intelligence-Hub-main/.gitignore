@@ -3,6 +3,13 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+
+
+# Ignore H2 Database files
+*.mv.db
+*.trace.db
+
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
