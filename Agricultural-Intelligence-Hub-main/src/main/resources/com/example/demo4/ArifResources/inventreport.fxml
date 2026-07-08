@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="1525.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.ArifJavaClass.ReportController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="920.0" prefWidth="1525.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.ui.support.ReportController">
     <children>
         <SplitPane dividerPositions="0.19741454864154248" layoutX="-2.0" layoutY="1.0" orientation="VERTICAL" prefHeight="914.0" prefWidth="1530.0">
             <items>

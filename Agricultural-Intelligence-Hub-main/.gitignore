@@ -36,3 +36,13 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Custom Rules ###
+CSVFILES/ArifCSVFiles/contacts.csv
+next30days.json
+.idea/misc.xml
+.idea/encodings.xml
+.idea/uiDesigner.xml
+.idea/
+# Ignore secrets file
+backend-springboot/secrets.properties

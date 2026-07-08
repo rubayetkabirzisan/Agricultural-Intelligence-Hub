@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="1250.0" prefWidth="1400.0" styleClass="zishan" stylesheets="@options.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.ZishanJavaClass.IntercroppingController">
+<AnchorPane prefHeight="1250.0" prefWidth="1400.0" styleClass="zishan" stylesheets="@options.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.ui.crops.IntercroppingController">
    <children>
       <Label layoutX="474.0" layoutY="66.0" prefHeight="46.0" prefWidth="404.0" styleClass="head-label" text="                   Intercropping" textFill="WHITE">
          <font>

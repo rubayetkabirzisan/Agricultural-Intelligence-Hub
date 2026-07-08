@@ -49,6 +49,14 @@ public class CropServiceImpl implements CropService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public CropResponse getByName(String name) {
+        Crop c = repo.findByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("Crop not found with name=" + name));
+        return CropMapper.toResponse(c);
+    }
+
+    @Override
     public CropResponse update(Long id, CropUpdateRequest req) {
         Crop c = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Crop not found with id=" + id));

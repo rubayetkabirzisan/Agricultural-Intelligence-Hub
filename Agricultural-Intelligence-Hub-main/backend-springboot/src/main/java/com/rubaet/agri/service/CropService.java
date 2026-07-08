@@ -12,6 +12,8 @@ public interface CropService {
     List<CropResponse> getAll();
 
     CropResponse getById(Long id);
+    
+    CropResponse getByName(String name);
 
     CropResponse update(Long id, CropUpdateRequest req);
 

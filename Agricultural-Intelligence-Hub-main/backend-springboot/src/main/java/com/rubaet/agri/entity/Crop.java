@@ -20,7 +20,7 @@ public class Crop {
     @Column(length = 60)
     private String season;
 
-    @Column(length = 2000)
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false, updatable = false)

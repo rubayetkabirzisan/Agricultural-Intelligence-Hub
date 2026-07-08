@@ -39,6 +39,11 @@ public class CropController {
         return ResponseEntity.ok(service.getById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<CropResponse> searchByName(@RequestParam("name") String name) {
+        return ResponseEntity.ok(service.getByName(name));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<CropResponse> update(@PathVariable Long id, @Valid @RequestBody CropUpdateRequest req) {
         return ResponseEntity.ok(service.update(id, req));

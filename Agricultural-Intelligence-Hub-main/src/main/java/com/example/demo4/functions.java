@@ -30,27 +30,7 @@ public class functions {
         stage.setScene(scene);
         stage.show();
     }
-    @FXML
-    void supportBtnClk(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/ArifResources/HelpAndSupport.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("identyfy!");
-        stage.setScene(scene);
-        stage.show();
 
-    }
-
-    @FXML
-    void inventoryBtnclk(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/ArifResources/inventory.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("identyfy!");
-        stage.setScene(scene);
-        stage.show();
-
-    }
 
     @FXML
     void cropPlanningClk(ActionEvent event) throws IOException {
@@ -60,5 +40,15 @@ public class functions {
         stage.setTitle("identyfy!");
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void askAiBtn(ActionEvent event) {
+        try {
+            com.example.demo4.ui.weather.AskAi ai = new com.example.demo4.ui.weather.AskAi();
+            ai.showai();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
