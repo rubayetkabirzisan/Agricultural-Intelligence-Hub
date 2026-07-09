@@ -82,7 +82,10 @@ public class cropPlanningController implements projectInterface {
                 try {
                     com.fasterxml.jackson.databind.JsonNode root = new com.fasterxml.jackson.databind.ObjectMapper().readTree(jsonData);
                     String description = root.has("description") ? root.get("description").asText() : "Data not found";
-                    javafx.application.Platform.runLater(() -> targetLabel.setText(description));
+                    // Strip markdown formatting for cleaner UI
+                    description = description.replace("**", "").replace("*", "").replace("##", "").replace("#", "");
+                    String finalDesc = description;
+                    javafx.application.Platform.runLater(() -> targetLabel.setText(finalDesc));
                 } catch (Exception e) {
                     javafx.application.Platform.runLater(() -> targetLabel.setText("Failed to parse data."));
                 }
@@ -308,28 +311,23 @@ public class cropPlanningController implements projectInterface {
 
     @FXML
     public void interCropingBtn1(ActionEvent event) throws IOException {
-        //btn1 true
         com.example.demo4.state.AppState.getInstance().setSelectedCropName(interCroping1);
-
 
         FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/ZishanResources/Intercropping.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = new Stage();
-        stage.setTitle("identify!");
+        Stage stage = com.example.demo4.state.AppState.getInstance().getPrimaryStage();
+        stage.setTitle("Agri-Hub — Intercropping Guide");
         stage.setScene(scene);
         stage.show();
     }
     @FXML
-
     public void interCropingBtn2(ActionEvent event) throws IOException {
-
         com.example.demo4.state.AppState.getInstance().setSelectedCropName(interCroping2);
 
-        //btn2 true
         FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/ZishanResources/Intercropping.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        Stage stage=new Stage();
-        stage.setTitle("identify!");
+        Stage stage = com.example.demo4.state.AppState.getInstance().getPrimaryStage();
+        stage.setTitle("Agri-Hub — Intercropping Guide");
         stage.setScene(scene);
         stage.show();
     }

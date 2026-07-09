@@ -41,8 +41,10 @@ public class ZishanvideoController implements Initializable {
 
 
         Stage stage=new Stage();
-        stage.setTitle("crp if");
+        stage.setTitle("Agri-Hub — Video/Web Viewer");
         stage.setScene(scene);
+        stage.setWidth(1000);
+        stage.setHeight(700);
         stage.show();
 
     }

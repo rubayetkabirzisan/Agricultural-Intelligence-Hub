@@ -448,7 +448,8 @@ public class IntercroppingController {
             java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 com.fasterxml.jackson.databind.JsonNode root = new com.fasterxml.jackson.databind.ObjectMapper().readTree(response.body());
-                return root.get("description").asText();
+                String desc = root.get("description").asText();
+                return desc.replace("**", "").replace("*", "").replace("##", "").replace("#", "");
             } else {
                 return "Data not found for: " + cropName;
             }
@@ -460,10 +461,10 @@ public class IntercroppingController {
 
     @FXML
     void onBtnClk(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/ZishanResources/cropPlanning.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/ZishanResources/selectSeassonAndSand.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("identyfy!");
+        stage.setTitle("identify!");
         stage.setScene(scene);
         stage.show();
     }

@@ -1,25 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="1250.0" prefWidth="1400.0" styleClass="zishan" stylesheets="@ZishanResources/options.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.functions">
-   <children>
-      <AnchorPane layoutX="465.0" layoutY="197.0" prefHeight="435.0" prefWidth="606.0" styleClass="zishan" stylesheets="@ZishanResources/options.css">
-         <children>
-            <Button layoutX="166.0" layoutY="33.0" mnemonicParsing="false" onAction="#cropPlanningClk" prefHeight="58.0" prefWidth="215.0" style="-fx-background-radius: 1000;" styleClass="find-btn" stylesheets="@ZishanResources/options.css" text="Crop Planning" />
-            <Button layoutX="178.0" layoutY="361.0" mnemonicParsing="false" onAction="#showDiseases" prefHeight="58.0" prefWidth="205.0" style="-fx-background-radius: 1000;" styleClass="find-btn" text="Diseases" />
+<!--
+  Functions.fxml — Main Dashboard (Hub Menu)
+  Controller: com.example.demo4.functions
+  All onAction bindings preserved: #cropPlanningClk, #showDiseases, #weatherBtn, #askAiBtn
+  Layout changed from absolute AnchorPane to responsive BorderPane + FlowPane grid.
+-->
+<BorderPane
+    prefWidth="1100.0"
+    prefHeight="700.0"
+    styleClass="app-root"
+    stylesheets="@styles/application.css"
+    xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.example.demo4.functions">
 
-            <Button layoutX="50.0" layoutY="289.0" mnemonicParsing="false" onAction="#weatherBtn" prefHeight="54.0" prefWidth="210.0" style="-fx-background-radius: 1000;" styleClass="find-btn" text="Weather Integration" />
-            <Button layoutX="290.0" layoutY="289.0" mnemonicParsing="false" onAction="#askAiBtn" prefHeight="54.0" prefWidth="210.0" style="-fx-background-radius: 1000;-fx-background-color: #ff9800; -fx-text-fill: white;" styleClass="find-btn" text="Ask AI Expert" />
-         </children>
-      </AnchorPane>
-      <Label alignment="CENTER" layoutX="516.0" layoutY="32.0" prefHeight="50.0" prefWidth="414.0" styleClass="head-label" stylesheets="@ZishanResources/options.css" text="Agriculture Intelligence Hub" textFill="WHITE">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Label>
-   </children>
-</AnchorPane>
+    <!-- ── TOP BAR ── -->
+    <top>
+        <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="16">
+            <Label text="🌿" style="-fx-font-size: 22px;" />
+            <Label text="Agri-Hub" styleClass="app-logo" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Label text="👤" style="-fx-font-size: 14px;" />
+            <Label fx:id="userEmailLabel" styleClass="text-muted" />
+        </HBox>
+    </top>
+
+    <!-- ── CENTER: Dashboard Grid ── -->
+    <center>
+        <VBox alignment="CENTER" spacing="40" style="-fx-padding: 60 80 60 80;">
+
+            <!-- Page heading -->
+            <VBox alignment="CENTER" spacing="8">
+                <Label text="What would you like to do today?" styleClass="text-page-title" />
+                <Label text="Select a module to get started with your farm management." styleClass="text-muted" />
+            </VBox>
+
+            <!-- 2×2 Feature card grid -->
+            <FlowPane
+                alignment="CENTER"
+                hgap="24"
+                vgap="24"
+                prefWrapLength="700">
+
+                <!-- Crop Planning -->
+                <VBox styleClass="nav-card" onMouseClicked="#cropPlanningClk" alignment="CENTER" spacing="12">
+                    <Label text="🌱" styleClass="nav-card-icon" />
+                    <Label text="Crop Planning" styleClass="nav-card-title" />
+                    <Label text="Find the best crops for your season and soil type." styleClass="nav-card-subtitle" maxWidth="180" wrapText="true" />
+                    <!-- Invisible button for keyboard / action event routing -->
+                    <Button
+                        text="Open"
+                        styleClass="btn-secondary"
+                        onAction="#cropPlanningClk"
+                        maxWidth="140" />
+                </VBox>
+
+                <!-- Disease Identification -->
+                <VBox styleClass="nav-card" alignment="CENTER" spacing="12">
+                    <Label text="🔬" styleClass="nav-card-icon" />
+                    <Label text="Disease Identification" styleClass="nav-card-title" />
+                    <Label text="Identify plant diseases and get treatment advice." styleClass="nav-card-subtitle" maxWidth="180" wrapText="true" />
+                    <Button
+                        text="Open"
+                        styleClass="btn-secondary"
+                        onAction="#showDiseases"
+                        maxWidth="140" />
+                </VBox>
+
+                <!-- Weather Integration -->
+                <VBox styleClass="nav-card" alignment="CENTER" spacing="12">
+                    <Label text="🌤️" styleClass="nav-card-icon" />
+                    <Label text="Weather Dashboard" styleClass="nav-card-title" />
+                    <Label text="Live weather forecasts tailored for your farm." styleClass="nav-card-subtitle" maxWidth="180" wrapText="true" />
+                    <Button
+                        text="Open"
+                        styleClass="btn-secondary"
+                        onAction="#weatherBtn"
+                        maxWidth="140" />
+                </VBox>
+
+                <!-- Ask AI -->
+                <VBox styleClass="nav-card" alignment="CENTER" spacing="12">
+                    <Label text="🤖" styleClass="nav-card-icon" />
+                    <Label text="Ask AI Expert" styleClass="nav-card-title" />
+                    <Label text="Get instant AI-powered agricultural advice." styleClass="nav-card-subtitle" maxWidth="180" wrapText="true" />
+                    <Button
+                        text="Open"
+                        styleClass="btn-accent"
+                        onAction="#askAiBtn"
+                        maxWidth="140" />
+                </VBox>
+
+            </FlowPane>
+
+        </VBox>
+    </center>
+
+    <!-- ── BOTTOM STATUS BAR ── -->
+    <bottom>
+        <HBox
+            styleClass="topbar"
+            alignment="CENTER"
+            style="-fx-border-color: #30363d transparent transparent transparent; -fx-border-width: 1 0 0 0;">
+            <Label text="🌿 Agricultural Intelligence Hub — All systems operational" styleClass="text-small" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

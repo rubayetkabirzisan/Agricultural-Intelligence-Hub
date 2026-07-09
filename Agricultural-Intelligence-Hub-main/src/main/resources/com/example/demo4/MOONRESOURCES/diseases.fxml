@@ -1,38 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.Blend?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1250.0" prefWidth="1400.0" styleClass="white-form" stylesheets="@../ZishanResources/options.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo4.ui.weather.DiseasesController">
-   <effect>
-      <Blend mode="MULTIPLY" />
-   </effect>
-   <left>
-      <AnchorPane prefHeight="1250.0" prefWidth="1600.0" styleClass="white-form" stylesheets="@../ZishanResources/options.css" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" layoutX="494.0" layoutY="65.0" prefHeight="79.0" prefWidth="315.0" style="-fx-background-radius: 1000;" styleClass="white-form" stylesheets="@../ZishanResources/options.css" text="Diseases Identification" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-            </Label>
-            <Button layoutX="56.0" layoutY="527.0" mnemonicParsing="false" onAction="#onHomeBtnClk" prefHeight="54.0" prefWidth="186.0" styleClass="create-btn" stylesheets="@../ZishanResources/options.css" text="HOME" />
-            <ComboBox fx:id="comboboxmoon" blendMode="SCREEN" editable="true" layoutX="507.0" layoutY="274.0" prefHeight="62.0" prefWidth="306.0" promptText="SELECT CROP" style="-fx-background-radius: 1000;" styleClass="head-label" stylesheets="@../ZishanResources/options.css" />
-            <Button layoutX="601.0" layoutY="362.0" mnemonicParsing="false" onAction="#findDiseases" prefHeight="52.0" prefWidth="118.0" styleClass="find-btn" stylesheets="@../ZishanResources/options.css" text="FIND CROP" textFill="WHITE">
-               <font>
-                  <Font size="24.0" />
-               </font>
-               <effect>
-                  <Blend mode="BLUE" />
-               </effect>
-            </Button>
-            <Button layoutX="59.0" layoutY="651.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="186.0" styleClass="create-btn" stylesheets="@../ZishanResources/options.css" text="READ ME" />
-            <Label fx:id="throwerror" layoutX="512.0" layoutY="216.0" prefHeight="40.0" prefWidth="345.0" text="Label" />
-         </children>
-      </AnchorPane>
-   </left>
+<!--
+  diseases.fxml — Disease Identification / Crop Selector Screen
+  Controller: com.example.demo4.ui.weather.DiseasesController
+  All fx:id bindings preserved: comboboxmoon, throwerror
+  onAction preserved: #onHomeBtnClk, #findDiseases
+  Removed: Blend effects (invalid), hardcoded AnchorPane sizes
+-->
+<BorderPane
+    prefWidth="1100.0"
+    prefHeight="700.0"
+    styleClass="app-root"
+    stylesheets="@../styles/application.css"
+    xmlns="http://javafx.com/javafx/21"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.example.demo4.ui.weather.DiseasesController">
+
+    <!-- ── TOP BAR ── -->
+    <top>
+        <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="16">
+            <Button
+                text="← Home"
+                styleClass="btn-ghost"
+                onAction="#onHomeBtnClk"
+                mnemonicParsing="false" />
+            <Label text="🔬" style="-fx-font-size: 18px;" />
+            <Label text="Disease Identification" styleClass="text-page-title" />
+        </HBox>
+    </top>
+
+    <!-- ── CENTER: Crop selector card ── -->
+    <center>
+        <StackPane>
+            <VBox styleClass="auth-card" maxWidth="520" alignment="CENTER" spacing="20">
+
+                <!-- Icon and heading -->
+                <Label text="🌾" style="-fx-font-size: 48px;" />
+                <Label text="Select Your Crop" styleClass="text-section" />
+                <Label
+                    text="Choose a crop below to identify common diseases and get treatment recommendations."
+                    styleClass="text-muted"
+                    wrapText="true"
+                    maxWidth="400"
+                    alignment="CENTER" />
+
+                <!-- Error label -->
+                <Label
+                    fx:id="throwerror"
+                    styleClass="text-error"
+                    wrapText="true"
+                    maxWidth="380" />
+
+                <!-- Crop selector -->
+                <ComboBox
+                    fx:id="comboboxmoon"
+                    styleClass="combo-field"
+                    promptText="Select a crop..."
+                    maxWidth="380" />
+
+                <!-- Action button -->
+                <Button
+                    text="Find Diseases →"
+                    styleClass="btn-primary"
+                    onAction="#findDiseases"
+                    maxWidth="380"
+                    mnemonicParsing="false" />
+
+            </VBox>
+        </StackPane>
+    </center>
+
 </BorderPane>

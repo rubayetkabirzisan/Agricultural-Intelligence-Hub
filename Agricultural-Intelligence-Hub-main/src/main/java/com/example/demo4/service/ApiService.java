@@ -52,17 +52,28 @@ public class ApiService {
                 .thenApply(HttpResponse::body);
     }
 
-    public static CompletableFuture<String> askAi(String prompt) {
-        String jsonPayload = "{\"prompt\":\"" + prompt.replace("\"", "\\\"").replace("\n", " ") + "\"}";
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/ai/ask"))
-                .header("X-API-KEY", API_KEY)
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonPayload));
-        addJwtHeader(requestBuilder);
+    public static CompletableFuture<String> askAi(String prompt, java.util.List<java.util.Map<String, String>> history) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            java.util.Map<String, Object> requestBody = new java.util.HashMap<>();
+            requestBody.put("prompt", prompt);
+            if (history != null && !history.isEmpty()) {
+                requestBody.put("history", history);
+            }
+            String jsonPayload = mapper.writeValueAsString(requestBody);
 
-        return client.sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body);
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/ai/ask"))
+                    .header("X-API-KEY", API_KEY)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonPayload));
+            addJwtHeader(requestBuilder);
+
+            return client.sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body);
+        } catch (Exception e) {
+            return java.util.concurrent.CompletableFuture.failedFuture(e);
+        }
     }
 
     public static CompletableFuture<String> login(String email, String password) {

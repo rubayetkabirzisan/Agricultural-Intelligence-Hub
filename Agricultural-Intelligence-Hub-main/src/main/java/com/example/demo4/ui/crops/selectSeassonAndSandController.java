@@ -54,68 +54,40 @@ public class selectSeassonAndSandController implements Initializable {
         rotateAnimation.play();
     }
 
-    public class InvalidCombinationException extends Exception {
-        public InvalidCombinationException(String message) {
-            super(message);
-        }
-    }
-
     @FXML
     public void findcrop(ActionEvent event) throws IOException {
         String s1 = season.getValue();
         String s2 = soilquality.getValue();
-        try {
-            validateCombination(s1, s2);
+        showex.setStyle("-fx-text-fill: #f85149;"); // text-error color
 
+        if (s1 == null || s2 == null) {
+            showex.setText("Please select both season and soil.");
+            return;
+        }
 
-            switch (s1+" "+s2) {
+        String combination = s1 + " " + s2;
+        switch (combination) {
             case "Monsoon Sandy Soil":
-               cropPlanningController obj=new cropPlanningController();
-                obj.monsoonSandySoil(event);
+                new cropPlanningController().monsoonSandySoil(event);
                 break;
             case "Monsoon Clay Soil":
-                cropPlanningController obj1=new cropPlanningController();
-                obj1.monsoonClaySoil(event);
+                new cropPlanningController().monsoonClaySoil(event);
                 break;
             case "Summer Sandy Soil":
-                cropPlanningController obj2=new cropPlanningController();
-                obj2.summerSandySoil(event);
+                new cropPlanningController().summerSandySoil(event);
                 break;
             case "Summer Clay Soil":
-                cropPlanningController obj3=new cropPlanningController();
-                obj3.summerClaySoil(event);
+                new cropPlanningController().summerClaySoil(event);
                 break;
             case "Winter Loamy Soil":
-                cropPlanningController obj4=new cropPlanningController();
-                obj4.winterLoamySoil(event);
+                new cropPlanningController().winterLoamySoil(event);
                 break;
             case "Winter Clay Soil":
-                cropPlanningController obj5=new cropPlanningController();
-                obj5.winterClaySoil(event);
+                new cropPlanningController().winterClaySoil(event);
                 break;
             default:
-                System.out.println("not found");
-                //showError.setText("Not In List");
-        }} catch (InvalidCombinationException e) {
-                // Handle the exception (e.g., show an error message or log it)
-
-
-                e.printStackTrace();
-            }}
-
-
-    private void validateCombination(String s1, String s2) throws InvalidCombinationException {
-        String combination = s1 + " " + s2;
-        ObservableList<String> allowedCombinations = FXCollections.observableArrayList(
-                "Monsoon Sandy Soil", "Monsoon Clay Soil",
-                "Summer Sandy Soil", "Summer Clay Soil",
-                "Winter Loamy Soil", "Winter Clay Soil"
-        );
-
-        if (!allowedCombinations.contains(combination)) {
-            showex.setText("Invalid combination selected: " + combination);
-            throw new InvalidCombinationException("Invalid combination selected: " + combination);
-
+                showex.setText("No crops found for: " + combination);
+                break;
         }
     }
 

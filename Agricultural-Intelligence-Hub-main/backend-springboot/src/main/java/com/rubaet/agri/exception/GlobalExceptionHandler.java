@@ -25,7 +25,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(WebClientResponseException.class)
     public ProblemDetail handleWebClientException(WebClientResponseException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, "Error communicating with external service.");
+        String detail = ex.getResponseBodyAsString();
+        if (detail == null || detail.isEmpty()) {
+            detail = "Error communicating with external service: " + ex.getStatusCode();
+        }
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_GATEWAY, detail);
         problemDetail.setTitle("Bad Gateway");
         return problemDetail;
     }

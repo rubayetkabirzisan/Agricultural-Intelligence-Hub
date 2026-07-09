@@ -231,19 +231,31 @@ public class SelectDiseasesController implements projectInterface {
         }
     }
 
-   @FXML
-   public void onName1Clk(ActionEvent event) throws IOException {
+   private void playvideo(String path) throws IOException {
+       if (path == null) return;
+       com.example.demo4.ui.crops.ZishanvideoController wc = new com.example.demo4.ui.crops.ZishanvideoController();
+       wc.showweb(path);
    }
 
+   @FXML
+   public void onName1Clk(ActionEvent event) throws IOException {
+       playvideo(webAddressName1);
+   }
 
-    public void onName2Clk(ActionEvent event) throws IOException {
-    }
+   @FXML
+   public void onName2Clk(ActionEvent event) throws IOException {
+       playvideo(webAddressName2);
+   }
 
-    public void onName3Clk(ActionEvent event) throws IOException {
-    }
+   @FXML
+   public void onName3Clk(ActionEvent event) throws IOException {
+       playvideo(webAddressName3);
+   }
 
-    public void onName4Clk(ActionEvent event) throws IOException {
-    }
+   @FXML
+   public void onName4Clk(ActionEvent event) throws IOException {
+       playvideo(webAddressName4);
+   }
 
 
 
