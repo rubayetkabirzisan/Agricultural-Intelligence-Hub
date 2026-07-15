@@ -35,14 +35,34 @@ public class AiController {
 
     @PostMapping("/ask")
     public Mono<String> askAi(@RequestBody AiRequest request) {
+        return Mono.just(callGemini(request, SYSTEM_INSTRUCTION));
+    }
 
+    @PostMapping("/plan-crop")
+    public Mono<String> planCrop(@RequestBody AiRequest request) {
+        String agronomistInstruction = 
+            "You are an expert Agronomist. Recommend two suitable main crops and an intercropping strategy " +
+            "based on the provided season, soil, and region. Structure your response clearly with headings. " +
+            "Keep responses practical, concise, and farmer-friendly.";
+        return Mono.just(callGemini(request, agronomistInstruction));
+    }
+
+    @PostMapping("/identify-disease")
+    public Mono<String> identifyDisease(@RequestBody AiRequest request) {
+        String pathologistInstruction = 
+            "You are an expert Plant Pathologist. Identify the most likely disease from the provided symptoms, " +
+            "and provide clear treatment and prevention steps. Structure your response clearly with headings. " +
+            "Keep responses practical, concise, and farmer-friendly.";
+        return Mono.just(callGemini(request, pathologistInstruction));
+    }
+
+    private String callGemini(AiRequest request, String systemInstruction) {
         // Mock response if no real API key is configured
         if ("demo_key".equals(apiKey)) {
-            String mockResponse = "{ \"candidates\": [ { \"content\": { \"parts\": [ { \"text\": \"" +
+            return "{ \"candidates\": [ { \"content\": { \"parts\": [ { \"text\": \"" +
                 "This is a mock AI response because a valid GEMINI_API_KEY was not provided. " +
                 "To use the real AI, please set GEMINI_API_KEY before running the backend." +
                 "\" } ] } } ] }";
-            return Mono.just(mockResponse);
         }
 
         String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + apiKey;
@@ -74,7 +94,7 @@ public class AiController {
         Map<String, Object> body = new HashMap<>();
         body.put("contents", contents);
         body.put("systemInstruction",
-            Map.of("parts", List.of(Map.of("text", SYSTEM_INSTRUCTION))));
+            Map.of("parts", List.of(Map.of("text", systemInstruction))));
 
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -82,9 +102,10 @@ public class AiController {
             HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
             
             ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
-            return Mono.just(response.getBody());
+            return response.getBody();
         } catch (Exception e) {
-            return Mono.error(e);
+            e.printStackTrace();
+            return "{ \"title\": \"Error\", \"detail\": \"" + e.getMessage() + "\" }";
         }
     }
 }

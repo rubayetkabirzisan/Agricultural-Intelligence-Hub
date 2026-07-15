@@ -27,31 +27,11 @@ public class functions implements Initializable {
     }
 
     @FXML
-    public void showDiseases(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/MOONRESOURCES/diseases.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("Agri-Hub — Disease Identification");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
     public void weatherBtn(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(functions.class.getResource("/com/example/demo4/MOONRESOURCES/Weather.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setTitle("Agri-Hub — Weather Dashboard");
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    @FXML
-    void cropPlanningClk(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/ZishanResources/selectSeassonAndSand.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("Agri-Hub — Crop Planning");
         stage.setScene(scene);
         stage.show();
     }

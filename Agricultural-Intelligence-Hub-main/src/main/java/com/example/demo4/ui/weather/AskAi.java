@@ -27,6 +27,7 @@ public class AskAi implements Initializable {
     @FXML private TextArea chatHistory;
     @FXML private TextField userInput;
     @FXML private Button sendButton;
+    @FXML private javafx.scene.control.ComboBox<String> modeSelector;
 
     /**
      * Conversation memory — each entry is a {role, content} map.
@@ -39,6 +40,10 @@ public class AskAi implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        modeSelector.getItems().addAll("🤖 General Chat", "🌱 Crop Planner", "🔬 Disease Identifier");
+        modeSelector.setValue("🤖 General Chat");
+        modeSelector.setOnAction(e -> updatePromptText());
+
         chatHistory.appendText("AgriBot: Hello! I'm AgriBot, your Agricultural AI Expert. 🌿\n\n");
         chatHistory.appendText("I can help you with:\n");
         chatHistory.appendText("  • Crop selection and planning\n");
@@ -50,13 +55,26 @@ public class AskAi implements Initializable {
         chatHistory.appendText("─".repeat(50) + "\n\n");
     }
 
+    private void updatePromptText() {
+        String mode = modeSelector.getValue();
+        if (mode.contains("Crop")) {
+            userInput.setPromptText("E.g. Season: Summer, Soil: Sandy...");
+        } else if (mode.contains("Disease")) {
+            userInput.setPromptText("Describe the plant symptoms...");
+        } else {
+            userInput.setPromptText("Ask AgriBot anything about farming...");
+        }
+    }
+
     @FXML
     public void sendMessage(ActionEvent event) {
         String message = userInput.getText().trim();
         if (message.isEmpty()) return;
 
+        String mode = modeSelector.getValue();
+
         // Append user message to chat display
-        chatHistory.appendText("You: " + message + "\n\n");
+        chatHistory.appendText("You (" + mode + "): " + message + "\n\n");
         userInput.clear();
 
         // Show loading state
@@ -64,9 +82,18 @@ public class AskAi implements Initializable {
         sendButton.setText("⏳ Thinking...");
         chatHistory.appendText("AgriBot: ⏳ Thinking...\n\n");
 
-        // Send to backend with full conversation history for context
-        com.example.demo4.service.ApiService.askAi(message, new ArrayList<>(conversationHistory))
-            .thenAccept(jsonData -> {
+        java.util.concurrent.CompletableFuture<String> aiFuture;
+        if (mode.contains("Crop")) {
+            // For crop planning, we treat the message as the season and soil combo
+            aiFuture = com.example.demo4.service.ApiService.askAiCropPlan(message, "Custom Input");
+        } else if (mode.contains("Disease")) {
+            aiFuture = com.example.demo4.service.ApiService.askAiDisease(message);
+        } else {
+            // General Chat
+            aiFuture = com.example.demo4.service.ApiService.askAi(message, new ArrayList<>(conversationHistory));
+        }
+
+        aiFuture.thenAccept(jsonData -> {
                 Platform.runLater(() -> {
                     try {
                         ObjectMapper mapper = new ObjectMapper();

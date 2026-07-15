@@ -53,6 +53,20 @@ public class ApiService {
     }
 
     public static CompletableFuture<String> askAi(String prompt, java.util.List<java.util.Map<String, String>> history) {
+        return sendAiPostRequest("/ai/ask", prompt, history);
+    }
+
+    public static CompletableFuture<String> askAiCropPlan(String season, String soil) {
+        String prompt = String.format("Season: %s, Soil: %s", season, soil);
+        return sendAiPostRequest("/ai/plan-crop", prompt, null);
+    }
+
+    public static CompletableFuture<String> askAiDisease(String symptoms) {
+        String prompt = String.format("Symptoms: %s", symptoms);
+        return sendAiPostRequest("/ai/identify-disease", prompt, null);
+    }
+
+    private static CompletableFuture<String> sendAiPostRequest(String endpoint, String prompt, java.util.List<java.util.Map<String, String>> history) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             java.util.Map<String, Object> requestBody = new java.util.HashMap<>();
@@ -63,7 +77,7 @@ public class ApiService {
             String jsonPayload = mapper.writeValueAsString(requestBody);
 
             HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/ai/ask"))
+                    .uri(URI.create(BASE_URL + endpoint))
                     .header("X-API-KEY", API_KEY)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload));
