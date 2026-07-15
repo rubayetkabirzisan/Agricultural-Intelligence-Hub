@@ -45,37 +45,10 @@
                 <Label text="Select a module to get started with your farm management." styleClass="text-muted" />
             </VBox>
 
-            <!-- 2×2 Feature card grid -->
-            <FlowPane
+            <!-- 2 Feature cards side-by-side -->
+            <HBox
                 alignment="CENTER"
-                hgap="24"
-                vgap="24"
-                prefWrapLength="700">
-
-                <!-- Crop Planning -->
-                <VBox styleClass="nav-card" onMouseClicked="#cropPlanningClk" alignment="CENTER" spacing="12">
-                    <Label text="🌱" styleClass="nav-card-icon" />
-                    <Label text="Crop Planning" styleClass="nav-card-title" />
-                    <Label text="Find the best crops for your season and soil type." styleClass="nav-card-subtitle" maxWidth="180" wrapText="true" />
-                    <!-- Invisible button for keyboard / action event routing -->
-                    <Button
-                        text="Open"
-                        styleClass="btn-secondary"
-                        onAction="#cropPlanningClk"
-                        maxWidth="140" />
-                </VBox>
-
-                <!-- Disease Identification -->
-                <VBox styleClass="nav-card" alignment="CENTER" spacing="12">
-                    <Label text="🔬" styleClass="nav-card-icon" />
-                    <Label text="Disease Identification" styleClass="nav-card-title" />
-                    <Label text="Identify plant diseases and get treatment advice." styleClass="nav-card-subtitle" maxWidth="180" wrapText="true" />
-                    <Button
-                        text="Open"
-                        styleClass="btn-secondary"
-                        onAction="#showDiseases"
-                        maxWidth="140" />
-                </VBox>
+                spacing="40">
 
                 <!-- Weather Integration -->
                 <VBox styleClass="nav-card" alignment="CENTER" spacing="12">
@@ -92,8 +65,8 @@
                 <!-- Ask AI -->
                 <VBox styleClass="nav-card" alignment="CENTER" spacing="12">
                     <Label text="🤖" styleClass="nav-card-icon" />
-                    <Label text="Ask AI Expert" styleClass="nav-card-title" />
-                    <Label text="Get instant AI-powered agricultural advice." styleClass="nav-card-subtitle" maxWidth="180" wrapText="true" />
+                    <Label text="AI Assistant Hub" styleClass="nav-card-title" />
+                    <Label text="Unified AI for crop planning, disease ID, and expert advice." styleClass="nav-card-subtitle" maxWidth="180" wrapText="true" />
                     <Button
                         text="Open"
                         styleClass="btn-accent"
@@ -101,7 +74,7 @@
                         maxWidth="140" />
                 </VBox>
 
-            </FlowPane>
+            </HBox>
 
         </VBox>
     </center>

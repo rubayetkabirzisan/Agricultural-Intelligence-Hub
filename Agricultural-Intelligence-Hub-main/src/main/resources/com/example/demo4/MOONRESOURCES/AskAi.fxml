@@ -101,6 +101,10 @@
                 spacing="12"
                 alignment="CENTER"
                 style="-fx-padding: 8 24 16 24;">
+                <javafx.scene.control.ComboBox
+                    fx:id="modeSelector"
+                    styleClass="combo-field"
+                    prefWidth="180" />
                 <TextField
                     fx:id="userInput"
                     styleClass="search-box"
