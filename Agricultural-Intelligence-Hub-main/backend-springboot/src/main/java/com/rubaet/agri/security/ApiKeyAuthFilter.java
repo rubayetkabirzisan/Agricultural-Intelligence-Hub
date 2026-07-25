@@ -16,7 +16,7 @@ import java.util.Collections;
 @Component
 public class ApiKeyAuthFilter extends OncePerRequestFilter {
 
-    @Value("${app.client-api-key}")
+    @Value("${app.api-key}")
     private String clientApiKey;
 
     @Override

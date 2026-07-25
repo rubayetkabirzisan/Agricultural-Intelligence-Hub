@@ -1,12 +1,14 @@
 package com.rubaet.agri.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 
 public class AiRequest {
     
     @NotBlank(message = "Prompt is required")
+    @Size(max = 2000, message = "Prompt must not exceed 2000 characters")
     private String prompt;
 
     /**

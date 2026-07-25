@@ -1,131 +1,193 @@
 package com.example.demo4.service;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.concurrent.CompletableFuture;
 import com.example.demo4.state.AppState;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+
 /**
- * Centralized service for making asynchronous HTTP requests to the Spring Boot backend.
+ * Centralized async HTTP service for the Spring Boot backend.
+ * All methods return CompletableFuture and are non-blocking.
  */
 public class ApiService {
 
-    private static final String API_KEY = "agri_hub_desktop_client_secret_2026";
+    private static final String API_KEY  = "agri_hub_desktop_client_secret_2026";
     private static final String BASE_URL = "http://localhost:8080/api";
-    private static final HttpClient client = HttpClient.newHttpClient();
+    private static final HttpClient CLIENT = HttpClient.newHttpClient();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    public static CompletableFuture<String> getCropData(String cropName) {
-        String searchName = cropName.endsWith(" Summary") ? cropName : cropName + " Summary";
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/crops/search?name=" + searchName.replace(" ", "%20")))
-                .header("X-API-KEY", API_KEY)
-                .GET();
-        addJwtHeader(requestBuilder);
+    // ── Auth ──────────────────────────────────────────────────────
 
-        return client.sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body);
+    /**
+     * Login. Returns String[2] { accessToken, refreshToken } or null on failure.
+     */
+    public static CompletableFuture<String[]> login(String email, String password) {
+        return authRequest("/auth/login", email, password);
     }
 
-    public static CompletableFuture<String> getDiseaseData(String cropName) {
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/diseases/" + cropName.replace(" ", "%20")))
-                .header("X-API-KEY", API_KEY)
-                .GET();
-        addJwtHeader(requestBuilder);
-
-        return client.sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body);
+    /**
+     * Register. Returns String[2] { accessToken, refreshToken } or null on failure.
+     */
+    public static CompletableFuture<String[]> register(String email, String password) {
+        return authRequest("/auth/register", email, password);
     }
 
-    public static CompletableFuture<String> getWeatherData(String city) {
-        HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(BASE_URL + "/weather?city=" + city.replace(" ", "%20")))
-                .header("X-API-KEY", API_KEY)
-                .GET();
-        addJwtHeader(requestBuilder);
-
-        return client.sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body);
-    }
-
-    public static CompletableFuture<String> askAi(String prompt, java.util.List<java.util.Map<String, String>> history) {
-        return sendAiPostRequest("/ai/ask", prompt, history);
-    }
-
-    public static CompletableFuture<String> askAiCropPlan(String season, String soil) {
-        String prompt = String.format("Season: %s, Soil: %s", season, soil);
-        return sendAiPostRequest("/ai/plan-crop", prompt, null);
-    }
-
-    public static CompletableFuture<String> askAiDisease(String symptoms) {
-        String prompt = String.format("Symptoms: %s", symptoms);
-        return sendAiPostRequest("/ai/identify-disease", prompt, null);
-    }
-
-    private static CompletableFuture<String> sendAiPostRequest(String endpoint, String prompt, java.util.List<java.util.Map<String, String>> history) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            java.util.Map<String, Object> requestBody = new java.util.HashMap<>();
-            requestBody.put("prompt", prompt);
-            if (history != null && !history.isEmpty()) {
-                requestBody.put("history", history);
-            }
-            String jsonPayload = mapper.writeValueAsString(requestBody);
-
-            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + endpoint))
-                    .header("X-API-KEY", API_KEY)
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(jsonPayload));
-            addJwtHeader(requestBuilder);
-
-            return client.sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString())
-                    .thenApply(HttpResponse::body);
-        } catch (Exception e) {
-            return java.util.concurrent.CompletableFuture.failedFuture(e);
-        }
-    }
-
-    public static CompletableFuture<String> login(String email, String password) {
-        return authenticate("/auth/login", email, password);
-    }
-
-    public static CompletableFuture<String> register(String email, String password) {
-        return authenticate("/auth/register", email, password);
-    }
-
-    private static CompletableFuture<String> authenticate(String endpoint, String email, String password) {
-        String jsonPayload = "{\"email\":\"" + email + "\", \"password\":\"" + password + "\"}";
-        HttpRequest request = HttpRequest.newBuilder()
+    private static CompletableFuture<String[]> authRequest(String endpoint, String email, String password) {
+        String json = "{\"email\":\"" + email + "\", \"password\":\"" + password + "\"}";
+        HttpRequest req = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + endpoint))
                 .header("X-API-KEY", API_KEY)
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
+                .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-        return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(response -> {
-                    if (response.statusCode() == 200) {
-                        try {
-                            ObjectMapper mapper = new ObjectMapper();
-                            JsonNode json = mapper.readTree(response.body());
-                            return json.get("token").asText();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    return null;
-                });
+        return CLIENT.sendAsync(req, HttpResponse.BodyHandlers.ofString()).thenApply(res -> {
+            if (res.statusCode() == 200) {
+                try {
+                    JsonNode root = MAPPER.readTree(res.body());
+                    String token   = root.path("token").asText(null);
+                    String refresh = root.path("refreshToken").asText(null);
+                    return new String[]{token, refresh};
+                } catch (Exception ignored) {}
+            }
+            return null;
+        });
     }
 
-    private static void addJwtHeader(HttpRequest.Builder requestBuilder) {
+    // ── AI ────────────────────────────────────────────────────────
+
+    public static CompletableFuture<String> askAi(String prompt, List<Map<String, String>> history) {
+        return sendAiPost("/ai/ask", prompt, history);
+    }
+
+    public static CompletableFuture<String> askAiCropPlan(String userInput, String ignored) {
+        return sendAiPost("/ai/plan-crop", userInput, null);
+    }
+
+    public static CompletableFuture<String> askAiDisease(String symptoms) {
+        return sendAiPost("/ai/identify-disease", "Symptoms: " + symptoms, null);
+    }
+
+    private static CompletableFuture<String> sendAiPost(String endpoint, String prompt,
+                                                         List<Map<String, String>> history) {
+        try {
+            Map<String, Object> body = history != null && !history.isEmpty()
+                ? Map.of("prompt", prompt, "history", history)
+                : Map.of("prompt", prompt);
+
+            String json = MAPPER.writeValueAsString(body);
+            HttpRequest.Builder rb = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + endpoint))
+                    .header("X-API-KEY", API_KEY)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json));
+            addJwt(rb);
+            return CLIENT.sendAsync(rb.build(), HttpResponse.BodyHandlers.ofString())
+                         .thenApply(HttpResponse::body);
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
+    }
+
+    // ── Weather ───────────────────────────────────────────────────
+
+    public static CompletableFuture<String> getWeatherData(String city) {
+        HttpRequest.Builder rb = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/weather?city=" + city.replace(" ", "%20")))
+                .header("X-API-KEY", API_KEY)
+                .GET();
+        addJwt(rb);
+        return CLIENT.sendAsync(rb.build(), HttpResponse.BodyHandlers.ofString())
+                     .thenApply(HttpResponse::body);
+    }
+
+    // ── Crop Data ─────────────────────────────────────────────────
+
+    public static CompletableFuture<String> getCropData(String cropName) {
+        String name = cropName.endsWith(" Summary") ? cropName : cropName + " Summary";
+        HttpRequest.Builder rb = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/crops/search?name=" + name.replace(" ", "%20")))
+                .header("X-API-KEY", API_KEY)
+                .GET();
+        addJwt(rb);
+        return CLIENT.sendAsync(rb.build(), HttpResponse.BodyHandlers.ofString())
+                     .thenApply(HttpResponse::body);
+    }
+
+    // ── Farm Profile ──────────────────────────────────────────────
+
+    public static CompletableFuture<String> getFarmProfile() {
+        HttpRequest.Builder rb = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/profile/me"))
+                .header("X-API-KEY", API_KEY)
+                .GET();
+        addJwt(rb);
+        return CLIENT.sendAsync(rb.build(), HttpResponse.BodyHandlers.ofString())
+                     .thenApply(HttpResponse::body);
+    }
+
+    public static CompletableFuture<String> saveFarmProfile(
+            String farmName, String location, String soilType,
+            double areaHectares, String primaryCrops, String region) {
+        try {
+            Map<String, Object> body = Map.of(
+                "farmName", farmName,
+                "location", location,
+                "soilType", soilType,
+                "areaHectares", areaHectares,
+                "primaryCrops", primaryCrops,
+                "region", region
+            );
+            String json = MAPPER.writeValueAsString(body);
+            HttpRequest.Builder rb = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/profile"))
+                    .header("X-API-KEY", API_KEY)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json));
+            addJwt(rb);
+            return CLIENT.sendAsync(rb.build(), HttpResponse.BodyHandlers.ofString())
+                         .thenApply(HttpResponse::body);
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
+    }
+
+    // ── Analytics ─────────────────────────────────────────────────
+
+    public static CompletableFuture<String> getYieldEstimate(String crop, double areaHectares, double seasonFactor) {
+        try {
+            Map<String, Object> body = Map.of(
+                "crop", crop,
+                "areaHectares", areaHectares,
+                "seasonYieldFactor", seasonFactor
+            );
+            String json = MAPPER.writeValueAsString(body);
+            HttpRequest.Builder rb = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/analytics/yield-estimate"))
+                    .header("X-API-KEY", API_KEY)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json));
+            addJwt(rb);
+            return CLIENT.sendAsync(rb.build(), HttpResponse.BodyHandlers.ofString())
+                         .thenApply(HttpResponse::body);
+        } catch (Exception e) {
+            return CompletableFuture.failedFuture(e);
+        }
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────
+
+    private static void addJwt(HttpRequest.Builder rb) {
         String token = AppState.getInstance().getJwtToken();
         if (token != null && !token.isEmpty()) {
-            requestBuilder.header("Authorization", "Bearer " + token);
+            rb.header("Authorization", "Bearer " + token);
         }
     }
 }

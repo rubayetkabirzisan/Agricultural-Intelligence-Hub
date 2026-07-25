@@ -1,26 +1,21 @@
 package com.example.demo4.ui.weather;
 
-import com.example.demo4.Start;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import java.net.URL;
 
 public class AskAi implements Initializable {
 
@@ -164,24 +159,22 @@ public class AskAi implements Initializable {
         userInput.positionCaret(userInput.getText().length());
     }
 
-    /** Back button — navigates to the main dashboard */
+    /** Back button — navigates to the main dashboard with fade transition */
     @FXML
-    public void goHome() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/Functions.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = com.example.demo4.state.AppState.getInstance().getPrimaryStage();
-        stage.setTitle("Agri-Hub — Dashboard");
-        stage.setScene(scene);
-        stage.show();
+    public void goHome() {
+        com.example.demo4.SceneTransition.navigateTo(
+            com.example.demo4.state.AppState.getInstance().getPrimaryStage(),
+            "/com/example/demo4/Functions.fxml",
+            "Agri-Hub — Dashboard"
+        );
     }
 
-    /** Called from functions.java — opens or navigates to the AskAi screen */
-    public void showai() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/MOONRESOURCES/AskAi.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        Stage stage = com.example.demo4.state.AppState.getInstance().getPrimaryStage();
-        stage.setTitle("Agri-Hub — AI Expert");
-        stage.setScene(scene);
-        stage.show();
+    /** Called from functions.java — opens the AskAi screen via SceneTransition */
+    public void showai() {
+        com.example.demo4.SceneTransition.navigateTo(
+            com.example.demo4.state.AppState.getInstance().getPrimaryStage(),
+            "/com/example/demo4/MOONRESOURCES/AskAi.fxml",
+            "Agri-Hub — AI Assistant Hub"
+        );
     }
 }

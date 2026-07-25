@@ -18,35 +18,57 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
+    /** Access token: 1 hour. Read from secrets.properties via application.properties. */
+    private static final long ACCESS_TOKEN_EXPIRY_MS = 1000L * 60 * 60; // 1 hour
+
+    /** Refresh token: 7 days. */
+    private static final long REFRESH_TOKEN_EXPIRY_MS = 1000L * 60 * 60 * 24 * 7;
+
     @Value("${app.jwt.secret:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}")
     private String secretKey;
+
+    // ── Public helpers ────────────────────────────────────────────
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+        return claimsResolver.apply(extractAllClaims(token));
     }
 
+    /** Generates a short-lived ACCESS token (1 hour). */
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        return buildToken(new HashMap<>(), userDetails, ACCESS_TOKEN_EXPIRY_MS);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder()
-                .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)) // 24 hours
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-                .compact();
+    /** Generates a long-lived REFRESH token (7 days). */
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("type", "refresh");
+        return buildToken(extraClaims, userDetails, REFRESH_TOKEN_EXPIRY_MS);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    public boolean isRefreshToken(String token) {
+        Claims claims = extractAllClaims(token);
+        return "refresh".equals(claims.get("type", String.class));
+    }
+
+    // ── Private helpers ───────────────────────────────────────────
+
+    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long expiryMs) {
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiryMs))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     private boolean isTokenExpired(String token) {

@@ -1,21 +1,17 @@
 package com.example.demo4.ui.auth;
 
-import com.example.demo4.Start;
+import com.example.demo4.SceneTransition;
 import com.example.demo4.service.ApiService;
 import com.example.demo4.state.AppState;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.scene.Node;
 
 public class AuthController {
 
@@ -29,38 +25,37 @@ public class AuthController {
 
     @FXML private Label errorLabel;
 
-    private final ApiService apiService = new ApiService();
-
     @FXML
     public void handleLogin(ActionEvent event) {
-        String email = loginEmailField.getText();
+        String email = loginEmailField.getText().trim();
         String password = loginPasswordField.getText();
-        
+
         if (email.isEmpty() || password.isEmpty()) {
-            errorLabel.setText("Please enter both email and password.");
+            showError("Please enter both email and password.");
             return;
         }
 
         loginBtn.setDisable(true);
-        loginBtn.setText("Logging in...");
+        loginBtn.setText("⏳ Signing in...");
         errorLabel.setText("");
 
-        apiService.login(email, password).thenAccept(token -> {
+        ApiService.login(email, password).thenAccept(result -> {
             Platform.runLater(() -> {
-                if (token != null && !token.isEmpty()) {
-                    AppState.getInstance().setJwtToken(token);
-                    navigateToMain(event);
+                if (result != null && result[0] != null && !result[0].isEmpty()) {
+                    AppState.getInstance().setJwtToken(result[0]);
+                    if (result[1] != null) AppState.getInstance().setRefreshToken(result[1]);
+                    AppState.getInstance().setUserEmail(email);
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    SceneTransition.navigateTo(stage, "/com/example/demo4/Functions.fxml", "Agri-Hub — Dashboard");
                 } else {
-                    errorLabel.setText("Invalid email or password.");
-                    loginBtn.setDisable(false);
-                    loginBtn.setText("Login");
+                    showError("Invalid email or password.");
+                    resetLoginBtn();
                 }
             });
         }).exceptionally(e -> {
             Platform.runLater(() -> {
-                errorLabel.setText("Connection error or unauthorized.");
-                loginBtn.setDisable(false);
-                loginBtn.setText("Login");
+                showError("Cannot connect to server. Is the backend running?");
+                resetLoginBtn();
             });
             return null;
         });
@@ -68,49 +63,45 @@ public class AuthController {
 
     @FXML
     public void handleRegister(ActionEvent event) {
-        String email = regEmailField.getText();
+        String email = regEmailField.getText().trim();
         String password = regPasswordField.getText();
 
         if (email.isEmpty() || password.isEmpty()) {
-            errorLabel.setText("Please enter both email and password.");
+            showError("Please enter both email and password.");
+            return;
+        }
+        if (password.length() < 6) {
+            showError("Password must be at least 6 characters.");
             return;
         }
 
         regBtn.setDisable(true);
-        regBtn.setText("Registering...");
+        regBtn.setText("⏳ Creating account...");
         errorLabel.setText("");
 
-        apiService.register(email, password).thenAccept(token -> {
+        ApiService.register(email, password).thenAccept(result -> {
             Platform.runLater(() -> {
-                if (token != null && !token.isEmpty()) {
-                    AppState.getInstance().setJwtToken(token);
-                    navigateToMain(event);
+                if (result != null && result[0] != null && !result[0].isEmpty()) {
+                    AppState.getInstance().setJwtToken(result[0]);
+                    if (result[1] != null) AppState.getInstance().setRefreshToken(result[1]);
+                    AppState.getInstance().setUserEmail(email);
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    SceneTransition.navigateTo(stage, "/com/example/demo4/Functions.fxml", "Agri-Hub — Dashboard");
                 } else {
-                    errorLabel.setText("Registration failed. Email might be in use.");
-                    regBtn.setDisable(false);
-                    regBtn.setText("Create Account");
+                    showError("Registration failed. Email might already be in use.");
+                    resetRegBtn();
                 }
             });
         }).exceptionally(e -> {
             Platform.runLater(() -> {
-                errorLabel.setText("Connection error during registration.");
-                regBtn.setDisable(false);
-                regBtn.setText("Create Account");
+                showError("Connection error during registration.");
+                resetRegBtn();
             });
             return null;
         });
     }
 
-    private void navigateToMain(ActionEvent event) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("/com/example/demo4/Functions.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Agri-Hub Dashboard");
-        } catch (IOException e) {
-            e.printStackTrace();
-            errorLabel.setText("Error loading dashboard.");
-        }
-    }
+    private void showError(String msg) { errorLabel.setText(msg); }
+    private void resetLoginBtn() { loginBtn.setDisable(false); loginBtn.setText("Sign In"); }
+    private void resetRegBtn()  { regBtn.setDisable(false); regBtn.setText("Create Account"); }
 }

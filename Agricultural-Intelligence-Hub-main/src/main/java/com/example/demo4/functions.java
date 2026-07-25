@@ -2,21 +2,17 @@ package com.example.demo4;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.scene.Node;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class functions implements Initializable {
 
-    @FXML
-    private Label userEmailLabel;
+    @FXML private Label userEmailLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -27,22 +23,26 @@ public class functions implements Initializable {
     }
 
     @FXML
-    public void weatherBtn(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(functions.class.getResource("/com/example/demo4/MOONRESOURCES/Weather.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+    public void weatherBtn(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setTitle("Agri-Hub — Weather Dashboard");
-        stage.setScene(scene);
-        stage.show();
+        SceneTransition.navigateTo(stage, "/com/example/demo4/MOONRESOURCES/Weather.fxml", "Agri-Hub — Weather Dashboard");
     }
 
     @FXML
     public void askAiBtn(ActionEvent event) {
-        try {
-            com.example.demo4.ui.weather.AskAi ai = new com.example.demo4.ui.weather.AskAi();
-            ai.showai();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneTransition.navigateTo(stage, "/com/example/demo4/MOONRESOURCES/AskAi.fxml", "Agri-Hub — AI Assistant Hub");
+    }
+
+    @FXML
+    public void farmProfileBtn(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneTransition.navigateTo(stage, "/com/example/demo4/MOONRESOURCES/FarmProfile.fxml", "Agri-Hub — My Farm Profile");
+    }
+
+    @FXML
+    public void analyticsBtn(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        SceneTransition.navigateTo(stage, "/com/example/demo4/MOONRESOURCES/Analytics.fxml", "Agri-Hub — Yield Analytics");
     }
 }

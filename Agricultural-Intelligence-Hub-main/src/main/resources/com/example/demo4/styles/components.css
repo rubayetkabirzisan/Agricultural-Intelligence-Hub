@@ -607,3 +607,139 @@
     -fx-border-width: 0;
     -fx-padding: 0;
 }
+
+/* ─────────────────────────────────────────────────────────────
+ * SPLASH SCREEN
+ * ───────────────────────────────────────────────────────────── */
+
+.splash-title {
+    -fx-text-fill: #22c55e;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(34,197,94,0.5), 12, 0.3, 0, 0);
+}
+
+.splash-subtitle {
+    -fx-text-fill: #8b949e;
+    -fx-font-size: 14px;
+}
+
+.splash-status {
+    -fx-text-fill: #484f58;
+    -fx-font-size: 12px;
+}
+
+.progress-bar-green {
+    -fx-accent: #22c55e;
+    -fx-background-color: #21262d;
+    -fx-background-radius: 9999;
+    -fx-pref-height: 6;
+}
+
+.progress-bar-green .bar {
+    -fx-background-color: linear-gradient(to right, #16a34a, #22c55e, #4ade80);
+    -fx-background-radius: 9999;
+    -fx-effect: dropshadow(gaussian, rgba(34,197,94,0.4), 6, 0.2, 0, 0);
+}
+
+.progress-bar-green .track {
+    -fx-background-color: #21262d;
+    -fx-background-radius: 9999;
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * FARM STAT CARD (Analytics sidebar)
+ * ───────────────────────────────────────────────────────────── */
+
+.farm-stat-card {
+    -fx-background-color: #1c2128;
+    -fx-background-radius: 10;
+    -fx-border-color: #30363d;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-padding: 12 16 12 16;
+    -fx-spacing: 4;
+}
+
+.farm-stat-card:hover {
+    -fx-border-color: #22c55e40;
+    -fx-background-color: #22272e;
+}
+
+.stat-value-green {
+    -fx-text-fill: #22c55e;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.stat-value-warning {
+    -fx-text-fill: #f59e0b;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* ─────────────────────────────────────────────────────────────
+ * JAVAFX CHARTS (BarChart, PieChart)
+ * ───────────────────────────────────────────────────────────── */
+
+.agri-chart {
+    -fx-background-color: #161b22;
+    -fx-background-radius: 12;
+    -fx-border-color: #30363d;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-padding: 16;
+}
+
+.agri-chart .chart-title {
+    -fx-text-fill: #e6edf3;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.agri-chart .chart-content {
+    -fx-background-color: transparent;
+}
+
+.agri-chart .chart-legend {
+    -fx-background-color: transparent;
+    -fx-text-fill: #8b949e;
+}
+
+.agri-chart .chart-legend-item {
+    -fx-text-fill: #8b949e;
+    -fx-font-size: 12px;
+}
+
+.agri-chart .axis {
+    -fx-tick-label-fill: #8b949e;
+    -fx-tick-length: 0;
+}
+
+.agri-chart .axis-label {
+    -fx-text-fill: #8b949e;
+    -fx-font-size: 12px;
+}
+
+.agri-chart .chart-plot-background {
+    -fx-background-color: #0d1117;
+    -fx-background-radius: 8;
+}
+
+.agri-chart .chart-horizontal-grid-lines {
+    -fx-stroke: #21262d;
+}
+
+.agri-chart .chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+/* Pie chart slice labels */
+.agri-chart .chart-pie-label {
+    -fx-fill: #e6edf3;
+    -fx-font-size: 12px;
+}
+
+.agri-chart .chart-pie-label-line {
+    -fx-stroke: #484f58;
+}

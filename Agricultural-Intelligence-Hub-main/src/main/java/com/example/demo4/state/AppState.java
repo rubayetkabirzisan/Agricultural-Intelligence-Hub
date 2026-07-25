@@ -14,6 +14,7 @@ public class AppState {
 
     private String selectedCropName;
     private String jwtToken;
+    private String refreshToken;
     private String userEmail;
 
     /** The single application window. Set once in Start.java. */
@@ -55,8 +56,15 @@ public class AppState {
         this.userEmail = extractEmailFromJwt(jwtToken);
     }
 
+    public String getRefreshToken() { return refreshToken; }
+    public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
+
     public String getUserEmail() {
         return userEmail != null ? userEmail : "";
+    }
+
+    public void setUserEmail(String email) {
+        this.userEmail = email;
     }
 
     /**
